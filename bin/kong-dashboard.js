@@ -5,7 +5,7 @@ var parseArgs = require('minimist');
 var argv = parseArgs(process.argv.slice(2));
 
 // validate options
-var validOptions = ['_', 'a', 'p'];
+var validOptions = ['_', 'a', 'p', 'h'];
 function hasInvalidOptions (argv) {
     var isInvalid = false;
     Object.keys(argv).some(function (optionName) {
@@ -22,7 +22,7 @@ var validCommands = ['start', 'build']
 if (argv.help || hasInvalidOptions(argv) || validCommands.indexOf(argv._[0]) < 0) {
     console.log("Usage:");
     console.log(" * kong-dashboard build");
-    console.log(" * kong-dashboard start [-p 8080] [-a user=password]");
+    console.log(" * kong-dashboard start [-p 8080] [-a user=password] [-h http://localhost:8001]");
     process.exit();
 }
 
@@ -35,5 +35,6 @@ if (argv._[0] === 'build') {
 if (argv._[0] === 'start') {
     var port = argv.p ? argv.p : 8080;
     var auth = argv.a;
-    dashboard.serve(port, auth);
+    var host = argv.h;
+    dashboard.serve(port, auth,host);
 }
